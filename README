@@ -1,0 +1,23 @@
+  __          
+ / _| ___ ___ 
+| |_ / __/ __|
+|  _| (_| (__
+|_|  \___\___|
+
+
+DESCRIPTION
+ Checks a given fiscal code for correctness (doesn't check for shape of the
+ code -- it just computes the check digit).
+
+INSTALLATION
+ + Download the repository
+ + Compile the program with
+
+	$ make
+
+ + Install the binary and the man pages with
+
+ 	$ sudo make install
+
+DOCUMENTATION
+ -> See man pages for fcc(1).

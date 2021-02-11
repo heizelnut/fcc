@@ -1,8 +1,10 @@
 #include <stdio.h>
 #include <string.h>
 
-const int oddPosTable[26] = {1, 0, 5, 7, 9, 13, 15, 17, 19, 21, 2, 4, 18, \
-	20, 11, 3, 6, 8, 12, 14, 16, 10, 22, 25, 24, 23};
+const int oddPosTable[26] = { 1, 0, 5, 7, 9, 13, 15, 17, 19, 21, 2, 4, 18, \
+	20, 11, 3, 6, 8, 12, 14, 16, 10, 22, 25, 24, 23 };
+
+const int letterMask[15] = { 1, 1, 1, 1, 1, 1, 0, 0, 1, 0, 0, 1, 0, 0, 0 };
 
 void
 lowercase(char *c) {
@@ -47,20 +49,24 @@ oddPosValues(char c) {
 int
 main(int argc, char *argv[]) {
 	if (argc != 2) {
-		fprintf(stderr, "Error: no code given.\n");
+		fprintf(stderr, "No code given.\n");
 		return 1;
 	}
 
 	if (strlen(argv[1]) != 16) {
-		fprintf(stderr, "Error: invalid code.\n");
+		fprintf(stderr, "Invalid shape.\n");
 		return 2;
 	}
 
 	char *code = argv[1];
 	int check = 0;
+	int validShape = 1;
 
 	for (int i = 0; i < 15; i++) {
 		lowercase(&code[i]);
+
+		if (isLetter(code[i]) != letterMask[i])
+			validShape = 0;
 
 		if (i % 2)
 			check += evenPosValues(code[i]);
@@ -76,11 +82,16 @@ main(int argc, char *argv[]) {
 	// Make last letter lowercase -- skipped by the loop
 	lowercase(&code[15]);
 	
-	if (digit == code[15]) {
-		printf("%s\n", code);
-		return 0;
+	if (validShape) {
+		if (digit == code[15]) {
+			printf("%s\n", code);
+			return 0;
+		} else {
+			fprintf(stderr, "Invalid check digit.\n");
+			return 3;
+		}
 	} else {
-		fprintf(stderr, "Error: invalid check digit.\n");
-		return 3;
+		fprintf(stderr, "Invalid shape.\n");
+		return 2;
 	}
 }
